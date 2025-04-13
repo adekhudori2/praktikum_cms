@@ -1,0 +1,60 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="card">
+    <div class="card-header">
+        <h2>Edit Data Mahasiswa</h2>
+    </div>
+    <div class="card-body">
+        <form action="{{ route('users.update', $user->id) }}" method="POST">
+            @csrf
+            @method('PUT')
+            
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" id="nama" name="nama" 
+                       value="{{ old('nama', $user->nama) }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" 
+                       value="{{ old('email', $user->email) }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="nim" class="form-label">NIM</label>
+                <input type="text" class="form-control" id="nim" name="nim" 
+                       value="{{ old('nim', $user->nim) }}" required>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="program_studi" class="form-label">Program Studi</label>
+                    <input type="text" class="form-control" id="program_studi" name="program_studi" 
+                           value="{{ old('program_studi', $user->program_studi) }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="fakultas" class="form-label">Fakultas</label>
+                    <input type="text" class="form-control" id="fakultas" name="fakultas" 
+                           value="{{ old('fakultas', $user->fakultas) }}" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="alamat" class="form-label">Alamat</label>
+                <textarea class="form-control" id="alamat" name="alamat" rows="3">{{ old('alamat', $user->alamat) }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="telepon" class="form-label">Nomor Telepon</label>
+                <input type="text" class="form-control" id="telepon" name="telepon" 
+                       value="{{ old('telepon', $user->telepon) }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            <a href="{{ route('users.index') }}" class="btn btn-secondary">Batal</a>
+        </form>
+    </div>
+</div>
+@endsection

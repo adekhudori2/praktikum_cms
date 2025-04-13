@@ -2,43 +2,59 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-
-class User extends Authenticatable
+class User
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    private static $users = [];
+    private static $nextId = 1;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    public static function all()
+    {
+        return self::$users;
+    }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    public static function find($id)
+    {
+        foreach (self::$users as $user) {
+            if ($user['id'] == $id) {
+                return $user;
+            }
+        }
+        return null;
+    }
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public static function create($data)
+    {
+        $data['id'] = self::$nextId++;
+        self::$users[] = $data;
+        return $data;
+    }
+
+    public static function update($id, $data)
+    {
+        foreach (self::$users as &$user) {
+            if ($user['id'] == $id) {
+                $user = array_merge($user, $data);
+                return $user;
+            }
+        }
+        return null;
+    }
+
+    public static function delete($id)
+    {
+        self::$users = array_filter(self::$users, function($user) use ($id) {
+            return $user['id'] != $id;
+        });
+        return true;
+    }
+
+    public static function exists($field, $value, $exceptId = null)
+    {
+        foreach (self::$users as $user) {
+            if ($user[$field] == $value && $user['id'] != $exceptId) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

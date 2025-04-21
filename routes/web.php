@@ -1,37 +1,17 @@
 <?php
 
+use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 
-Route::resource('users', UserController::class);
-
-// Route untuk data sampel (opsional)
-Route::get('/seed-sample', function() {
-    $sampleData = [
-        [
-            'nama' => 'John Doe',
-            'email' => 'john@example.com',
-            'nim' => '123456789',
-            'program_studi' => 'Teknik Informatika',
-            'fakultas' => 'FTI',
-            'alamat' => 'Jl. Contoh No. 123',
-            'telepon' => '08123456789'
-        ],
-        [
-            'nama' => 'Jane Smith',
-            'email' => 'jane@example.com',
-            'nim' => '987654321',
-            'program_studi' => 'Sistem Informasi',
-            'fakultas' => 'FTI',
-            'alamat' => 'Jl. Sample No. 456',
-            'telepon' => '08987654321'
-        ]
-    ];
-
-    foreach ($sampleData as $data) {
-        App\Models\User::create($data);
-    }
-
-    return redirect()->route('users.index')
-        ->with('success', 'Data sampel berhasil ditambahkan!');
+Route::get('/', function () {
+    return redirect()->route('mahasiswa.index');
 });
+
+Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name('mahasiswa.create');
+Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.store');
+Route::get('/mahasiswa/{id}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
+Route::get('/mahasiswa/{id}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
+Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
+Route::get('/mahasiswa/{id}/delete', [MahasiswaController::class, 'delete'])->name('mahasiswa.delete');
+Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');

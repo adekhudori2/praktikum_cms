@@ -1,0 +1,51 @@
+@extends('layouts.app')
+
+@section('title', 'Daftar Mahasiswa')
+
+@section('content')
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Daftar Mahasiswa</h5>
+        </div>
+        <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+            
+            @if(count($mahasiswas) > 0)
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Jurusan</th>
+                            <th>Email</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($mahasiswas as $index => $mahasiswa)
+                            <tr>
+                                <td>{{ $mahasiswa['nim'] }}</td>
+                                <td>{{ $mahasiswa['nama'] }}</td>
+                                <td>{{ $mahasiswa['jurusan'] }}</td>
+                                <td>{{ $mahasiswa['email'] }}</td>
+                                <td>
+                                    <a href="{{ route('mahasiswa.show', $index) }}" class="btn btn-info btn-sm">Detail</a>
+                                    <a href="{{ route('mahasiswa.edit', $index) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('mahasiswa.delete', $index) }}" class="btn btn-danger btn-sm">Hapus</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <div class="alert alert-info">
+                    Tidak ada data mahasiswa yang tersedia.
+                </div>
+            @endif
+        </div>
+    </div>
+@endsection

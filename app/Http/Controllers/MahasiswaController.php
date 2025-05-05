@@ -2,48 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
-use Carbon\Carbon;
 
 class MahasiswaController extends Controller
 {
-    private function initializeData()
-    {
-        if (!Session::has('mahasiswas')) {
-            Session::put('mahasiswas', [
-                [
-                    'nim' => '2023001',
-                    'nama' => 'Budi Santoso',
-                    'jurusan' => 'Teknik Informatika',
-                    'email' => 'budi@example.com',
-                    'alamat' => 'Jl. Merdeka No. 10, Jakarta',
-                    'created_at' => Carbon::now()->format('d-m-Y H:i:s')
-                ],
-                [
-                    'nim' => '2023002',
-                    'nama' => 'Siti Nurhaliza',
-                    'jurusan' => 'Sistem Informasi',
-                    'email' => 'siti@example.com',
-                    'alamat' => 'Jl. Veteran No. 5, Bandung',
-                    'created_at' => Carbon::now()->format('d-m-Y H:i:s')
-                ],
-                [
-                    'nim' => '2023003',
-                    'nama' => 'Agus Wijaya',
-                    'jurusan' => 'Teknik Komputer',
-                    'email' => 'agus@example.com',
-                    'alamat' => 'Jl. Gatot Subroto No. 15, Surabaya',
-                    'created_at' => Carbon::now()->format('d-m-Y H:i:s')
-                ],
-            ]);
-        }
-    }
-
     public function index()
     {
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
+        $mahasiswas = Mahasiswa::all();
         return view('mahasiswa.index', compact('mahasiswas'));
     }
 
@@ -54,38 +20,15 @@ class MahasiswaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nim' => 'required|max:10',
+        $validated = $request->validate([
+            'nim' => 'required|unique:mahasiswas,nim|max:10',
             'nama' => 'required|max:255',
             'jurusan' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:mahasiswas,email',
             'alamat' => 'required',
         ]);
 
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        // Cek apakah NIM atau email sudah digunakan
-        foreach ($mahasiswas as $mahasiswa) {
-            if ($mahasiswa['nim'] == $request->nim) {
-                return back()->withErrors(['nim' => 'NIM sudah digunakan'])->withInput();
-            }
-            if ($mahasiswa['email'] == $request->email) {
-                return back()->withErrors(['email' => 'Email sudah digunakan'])->withInput();
-            }
-        }
-
-        $mahasiswa = [
-            'nim' => $request->nim,
-            'nama' => $request->nama,
-            'jurusan' => $request->jurusan,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'created_at' => Carbon::now()->format('d-m-Y H:i:s')
-        ];
-
-        $mahasiswas[] = $mahasiswa;
-        Session::put('mahasiswas', $mahasiswas);
+        Mahasiswa::create($validated);
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil ditambahkan!');
@@ -93,73 +36,29 @@ class MahasiswaController extends Controller
 
     public function show($id)
     {
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        if (!isset($mahasiswas[$id])) {
-            return redirect()->route('mahasiswa.index')
-                ->with('error', 'Data mahasiswa tidak ditemukan!');
-        }
-        
-        $mahasiswa = $mahasiswas[$id];
+        $mahasiswa = Mahasiswa::findOrFail($id);
         return view('mahasiswa.show', compact('mahasiswa'));
     }
 
     public function edit($id)
     {
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        if (!isset($mahasiswas[$id])) {
-            return redirect()->route('mahasiswa.index')
-                ->with('error', 'Data mahasiswa tidak ditemukan!');
-        }
-        
-        $mahasiswa = $mahasiswas[$id];
-        $index = $id;
-        return view('mahasiswa.edit', compact('mahasiswa', 'index'));
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        return view('mahasiswa.edit', compact('mahasiswa'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'nim' => 'required|max:10',
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        
+        $validated = $request->validate([
+            'nim' => 'required|max:10|unique:mahasiswas,nim,'.$id,
             'nama' => 'required|max:255',
             'jurusan' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:mahasiswas,email,'.$id,
             'alamat' => 'required',
         ]);
 
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        if (!isset($mahasiswas[$id])) {
-            return redirect()->route('mahasiswa.index')
-                ->with('error', 'Data mahasiswa tidak ditemukan!');
-        }
-        
-        // Cek apakah NIM atau email sudah digunakan oleh mahasiswa lain
-        foreach ($mahasiswas as $index => $mahasiswa) {
-            if ($index != $id) {
-                if ($mahasiswa['nim'] == $request->nim) {
-                    return back()->withErrors(['nim' => 'NIM sudah digunakan'])->withInput();
-                }
-                if ($mahasiswa['email'] == $request->email) {
-                    return back()->withErrors(['email' => 'Email sudah digunakan'])->withInput();
-                }
-            }
-        }
-
-        $mahasiswas[$id] = [
-            'nim' => $request->nim,
-            'nama' => $request->nama,
-            'jurusan' => $request->jurusan,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'created_at' => $mahasiswas[$id]['created_at']
-        ];
-        
-        Session::put('mahasiswas', $mahasiswas);
+        $mahasiswa->update($validated);
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil diperbarui!');
@@ -167,32 +66,14 @@ class MahasiswaController extends Controller
 
     public function delete($id)
     {
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        if (!isset($mahasiswas[$id])) {
-            return redirect()->route('mahasiswa.index')
-                ->with('error', 'Data mahasiswa tidak ditemukan!');
-        }
-        
-        $mahasiswa = $mahasiswas[$id];
-        $index = $id;
-        return view('mahasiswa.delete', compact('mahasiswa', 'index'));
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        return view('mahasiswa.delete', compact('mahasiswa'));
     }
 
     public function destroy($id)
     {
-        $this->initializeData();
-        $mahasiswas = Session::get('mahasiswas');
-        
-        if (!isset($mahasiswas[$id])) {
-            return redirect()->route('mahasiswa.index')
-                ->with('error', 'Data mahasiswa tidak ditemukan!');
-        }
-        
-        unset($mahasiswas[$id]);
-        $mahasiswas = array_values($mahasiswas); // Menata ulang indeks array
-        Session::put('mahasiswas', $mahasiswas);
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        $mahasiswa->delete();
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil dihapus!');

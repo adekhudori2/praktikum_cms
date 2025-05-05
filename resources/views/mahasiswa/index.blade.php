@@ -8,12 +8,6 @@
             <h5 class="mb-0">Daftar Mahasiswa</h5>
         </div>
         <div class="card-body">
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-            
             @if(count($mahasiswas) > 0)
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -26,16 +20,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($mahasiswas as $index => $mahasiswa)
+                        @foreach($mahasiswas as $mahasiswa)
                             <tr>
-                                <td>{{ $mahasiswa['nim'] }}</td>
-                                <td>{{ $mahasiswa['nama'] }}</td>
-                                <td>{{ $mahasiswa['jurusan'] }}</td>
-                                <td>{{ $mahasiswa['email'] }}</td>
+                                <td>{{ $mahasiswa->nim }}</td>
+                                <td>{{ $mahasiswa->nama }}</td>
+                                <td>{{ $mahasiswa->jurusan }}</td>
+                                <td>{{ $mahasiswa->email }}</td>
                                 <td>
-                                    <a href="{{ route('mahasiswa.show', $index) }}" class="btn btn-info btn-sm">Detail</a>
-                                    <a href="{{ route('mahasiswa.edit', $index) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="{{ route('mahasiswa.delete', $index) }}" class="btn btn-danger btn-sm">Hapus</a>
+                                    <a href="{{ route('mahasiswa.show', $mahasiswa->id) }}" class="btn btn-info btn-sm">Detail</a>
+                                    <a href="{{ route('mahasiswa.edit', $mahasiswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('mahasiswa.delete', $mahasiswa->id) }}" class="btn btn-danger btn-sm">Hapus</a>
                                 </td>
                             </tr>
                         @endforeach

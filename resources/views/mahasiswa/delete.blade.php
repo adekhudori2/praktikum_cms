@@ -13,19 +13,19 @@
             <div class="alert alert-warning">
                 <div class="row mb-2">
                     <div class="col-md-3 fw-bold">NIM</div>
-                    <div class="col-md-9">{{ $mahasiswa['nim'] }}</div>
+                    <div class="col-md-9">{{ $mahasiswa->nim }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-md-3 fw-bold">Nama</div>
-                    <div class="col-md-9">{{ $mahasiswa['nama'] }}</div>
+                    <div class="col-md-9">{{ $mahasiswa->nama }}</div>
                 </div>
                 <div class="row">
                     <div class="col-md-3 fw-bold">Jurusan</div>
-                    <div class="col-md-9">{{ $mahasiswa['jurusan'] }}</div>
+                    <div class="col-md-9">{{ $mahasiswa->jurusan }}</div>
                 </div>
             </div>
             
-            <form action="{{ route('mahasiswa.destroy', $index) }}" method="POST">
+            <form action="{{ route('mahasiswa.destroy', $mahasiswa->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Ya, Hapus Data</button>

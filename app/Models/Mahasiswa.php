@@ -9,15 +9,24 @@ class Mahasiswa extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'nim',
+        'nama',
+        'jurusan',
+        'email',
+        'alamat',
+        'foto',
+        // tambahkan field lain yang perlu diisi massal di sini
+    ];
+
     // Fungsi "seolah-olah" mengambil dari database
-public static function getAll()
-{
-    return Mahasiswa::all();
-}
+    public static function getAll()
+    {
+        return self::all();
+    }
 
-public static function find($id)
-{
-    return Mahasiswa::where($id)->first();
-}
-
+    public static function find($id)
+    {
+        return self::find($id);
+    }
 }

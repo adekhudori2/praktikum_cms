@@ -26,12 +26,25 @@
                                 <td>{{ $mahasiswa->nama }}</td>
                                 <td>{{ $mahasiswa->jurusan }}</td>
                                 <td>{{ $mahasiswa->email }}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                @if($mahasiswa->foto)
+                                    <img src="{{ asset('storage/uploads/'.$mahasiswa->foto) }}" 
+                                        alt="Foto {{ $mahasiswa->nama }}" width="50" class="img-thumbnail">
+                                @else
+                                    <span class="text-muted">Tidak ada foto</span>
+                                @endif
+                                </td>
                                 <td>
                                     <a href="{{ route('mahasiswa.show', $mahasiswa->id) }}" class="btn btn-info btn-sm">Detail</a>
                                     <a href="{{ route('mahasiswa.edit', $mahasiswa->id) }}" class="btn btn-warning btn-sm">Edit</a>
                                     <a href="{{ route('mahasiswa.delete', $mahasiswa->id) }}" class="btn btn-danger btn-sm">Hapus</a>
                                 </td>
                             </tr>
+                            <tr>
+                            
+                            <!-- tambahkan kolom lainnya -->
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>

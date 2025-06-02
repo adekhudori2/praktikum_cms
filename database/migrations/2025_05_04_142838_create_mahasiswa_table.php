@@ -22,11 +22,12 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('mahasiswas');
+        Schema::table('mahasiswa', function (Blueprint $table) {
+    $table->string('foto')->nullable()->after('nim'); // contoh kolom untuk menyimpan nama file
+});
     }
 };

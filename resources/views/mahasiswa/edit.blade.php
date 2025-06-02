@@ -60,6 +60,29 @@
                 
                 <button type="submit" class="btn btn-primary">Update</button>
                 <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Batal</a>
+
+                <div class="mb-3">
+                    <label for="foto">Foto Profil</label>
+                    <input type="file" class="form-control @error('foto') is-invalid @enderror" 
+                        id="foto" name="foto">
+                    @error('foto')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    
+                    @if($mahasiswa->foto)
+                        <div class="mt-2">
+                            <img src="{{ asset('storage/uploads/'.$mahasiswa->foto) }}" 
+                                width="100" class="img-thumbnail">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" 
+                                    id="hapus_foto" name="hapus_foto">
+                                <label class="form-check-label" for="hapus_foto">
+                                    Hapus foto saat ini
+                                </label>
+                            </div>
+                        </div>
+                    @endif
+                </div>
             </form>
         </div>
     </div>

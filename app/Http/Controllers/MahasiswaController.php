@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MahasiswaController extends Controller
 {
@@ -26,9 +27,25 @@ class MahasiswaController extends Controller
             'jurusan' => 'required',
             'email' => 'required|email|unique:mahasiswas,email',
             'alamat' => 'required',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+        if ($request->hasFile('foto')) {
+        // Generate nama file unik
+        $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
+        
+        // Simpan file ke folder public/uploads
+        $path = $request->foto->storeAs('uploads', $filename, 'public');
+    }
 
-        Mahasiswa::create($validated);
+        Mahasiswa::create([
+        'nim' => $request->nim,
+        'nama' => $request->nama,
+        'jurusan' => $request->jurusan,
+        'email' => $request->email,
+        'alamat' => $request->alamat,
+        'foto' => $filename ?? null, // simpan nama file
+        // tambahkan field lainnya
+    ]);
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil ditambahkan!');
@@ -56,9 +73,33 @@ class MahasiswaController extends Controller
             'jurusan' => 'required',
             'email' => 'required|email|unique:mahasiswas,email,'.$id,
             'alamat' => 'required',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-        $mahasiswa->update($validated);
+         if ($request->hasFile('foto')) {
+        // Hapus file lama jika ada
+        if ($mahasiswa->foto) {
+            Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
+        }
+        
+        // Upload file baru
+        $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
+        $path = $request->foto->storeAs('uploads', $filename, 'public');
+        $mahasiswa->foto = $filename;
+    }
+    
+    // Handle hapus foto
+    if ($request->hapus_foto && $mahasiswa->foto) {
+        Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
+        $mahasiswa->foto = null;
+    }
+    
+    // Update field lainnya
+    $mahasiswa->nim = $request->nim;
+    // update field lainnya
+    
+    $mahasiswa->save();
+    $mahasiswa->update($validated);
+        
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil diperbarui!');
@@ -73,9 +114,13 @@ class MahasiswaController extends Controller
     public function destroy($id)
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
+         if ($mahasiswa->foto) {
+        Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
+    }
         $mahasiswa->delete();
 
         return redirect()->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil dihapus!');
     }
+   
 }

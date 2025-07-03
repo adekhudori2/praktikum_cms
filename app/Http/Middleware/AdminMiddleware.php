@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
-    public function handle($request, Closure $next)
-    {
+   public function handle($request, Closure $next)
+{
         // Cek apakah user sudah login di salah satu guard
         $user = null;
         $guard = null;
@@ -47,8 +47,8 @@ class AdminMiddleware
             
             // Jika route yang diizinkan untuk admin
             if (in_array($routeName, $allowedAdminRoutes)) {
-                return $next($request);
-            }
+        return $next($request);
+    }
             
             // Jika admin mencoba akses route mahasiswa, redirect ke dashboard admin
             if (in_array($routeName, ['mahasiswa.dashboard', 'mahasiswa.profile.edit', 'mahasiswa.profile.update'])) {
@@ -57,8 +57,8 @@ class AdminMiddleware
             
             // Default: akses ditolak, redirect ke dashboard admin
             return redirect()->route('admin.dashboard')->with('error', 'Akses ditolak.');
-        }
-        
+}
+
         // Jika bukan admin, redirect ke dashboard sesuai role
         if ($user->role === 'mahasiswa') {
             return redirect()->route('mahasiswa.dashboard')->with('error', 'Akses ditolak. Hanya admin yang bisa mengakses halaman ini.');

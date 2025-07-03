@@ -39,8 +39,8 @@ class AuthController extends Controller
                 return redirect()->route('admin.dashboard')->with('success', 'Selamat datang, Admin!');
             }
         } else {
-            if (Auth::guard('mahasiswa')->attempt($credentials)) {
-                $user = Auth::guard('mahasiswa')->user();
+        if (Auth::guard('mahasiswa')->attempt($credentials)) {
+            $user = Auth::guard('mahasiswa')->user();
                 if ($user->role !== $selectedRole) {
                     Auth::guard('mahasiswa')->logout();
                     return back()->withErrors([

@@ -53,23 +53,23 @@ class MahasiswaController extends Controller
         
         // Proses upload foto jika ada
         if ($request->hasFile('foto')) {
-            $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
-            $path = $request->foto->storeAs('uploads', $filename, 'public');
+        $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
+        $path = $request->foto->storeAs('uploads', $filename, 'public');
             $fotoPath = $filename;
-        }
+    }
 
         // Simpan data mahasiswa
         Mahasiswa::create([
-            'username' => $request->username,
+        'username' => $request->username,
             'password' => Hash::make($request->password),
-            'nim' => $request->nim,
-            'nama' => $request->nama,
-            'jurusan' => $request->jurusan,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
+        'nim' => $request->nim,
+        'nama' => $request->nama,
+        'jurusan' => $request->jurusan,
+        'email' => $request->email,
+        'alamat' => $request->alamat,
             'foto' => $fotoPath,
             'role' => 'mahasiswa', // Set default role
-        ]);
+    ]);
 
         return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil ditambahkan!');
     }
@@ -101,28 +101,28 @@ class MahasiswaController extends Controller
         ]);
         
         // Proses upload foto baru jika ada
-        if ($request->hasFile('foto')) {
+         if ($request->hasFile('foto')) {
             // Hapus foto lama jika ada
-            if ($mahasiswa->foto) {
-                Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
-            }
-            $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
-            $path = $request->foto->storeAs('uploads', $filename, 'public');
-            $mahasiswa->foto = $filename;
+        if ($mahasiswa->foto) {
+            Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
         }
-        
+        $filename = time().'_'.Str::slug($request->nim).'.'.$request->foto->extension();
+        $path = $request->foto->storeAs('uploads', $filename, 'public');
+        $mahasiswa->foto = $filename;
+    }
+    
         // Handle hapus foto jika diminta
         if ($request->has('hapus_foto') && $request->hapus_foto && $mahasiswa->foto) {
-            Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
-            $mahasiswa->foto = null;
-        }
-        // Update field lainnya
-        $mahasiswa->nim = $request->nim;
+        Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
+        $mahasiswa->foto = null;
+    }
+    // Update field lainnya
+    $mahasiswa->nim = $request->nim;
         $mahasiswa->nama = $request->nama;
         $mahasiswa->jurusan = $request->jurusan;
         $mahasiswa->email = $request->email;
         $mahasiswa->alamat = $request->alamat;
-        $mahasiswa->save();
+    $mahasiswa->save();
 
         // Redirect sesuai role
         if (auth()->guard('web')->check() && auth()->guard('web')->user()->role === 'admin') {
@@ -145,9 +145,9 @@ class MahasiswaController extends Controller
         // Validasi: pastikan data mahasiswa ada
         $mahasiswa = Mahasiswa::findOrFail($id);
         // Hapus foto jika ada
-        if ($mahasiswa->foto) {
-            Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
-        }
+         if ($mahasiswa->foto) {
+        Storage::disk('public')->delete('uploads/'.$mahasiswa->foto);
+    }
         $mahasiswa->delete();
 
         return redirect()->route('mahasiswa.index')

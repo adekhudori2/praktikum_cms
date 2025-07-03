@@ -27,12 +27,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.index') }}">Daftar Mahasiswa</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('mahasiswa.create') }}">Tambah Mahasiswa</a>
-                        </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('mahasiswa.index') }}">Daftar Mahasiswa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('mahasiswa.create') }}">Tambah Mahasiswa</a>
+                </li>
                     @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('mahasiswa.dashboard') }}">Dashboard</a>

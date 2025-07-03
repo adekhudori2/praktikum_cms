@@ -163,10 +163,10 @@
       <div class="login-title">Sistem Pendaftaran Mahasiswa</div>
       <div class="login-desc">Silakan pilih role dan login untuk melanjutkan ke sistem akademik.</div>
       <form action="{{ route('login.submit') }}" method="POST">
-        @csrf
-        @if ($errors->any())
+                    @csrf
+                    @if ($errors->any())
           <div class="alert-danger">{{ $errors->first() }}</div>
-        @endif
+                    @endif
         <div class="role-selector">
           <label class="role-option" onclick="selectRole('mahasiswa')">
             <input type="radio" name="role" value="mahasiswa" checked>
@@ -180,7 +180,7 @@
             <strong>Admin</strong><br>
             <small>Akses dashboard admin</small>
           </label>
-        </div>
+                    </div>
         <div class="alert-sm">
           <strong>Penting:</strong> Pilih role yang sesuai dengan akun Anda. Admin hanya bisa login sebagai admin, mahasiswa hanya bisa login sebagai mahasiswa.
         </div>

@@ -13,7 +13,7 @@
             <h5 class="mb-0">Edit Data Mahasiswa</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('mahasiswa.update', $mahasiswa->id) }}" method="POST">
+            <form action="{{ route('mahasiswa.update', $mahasiswa->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 

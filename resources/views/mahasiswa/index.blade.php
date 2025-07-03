@@ -127,7 +127,7 @@
         </div>
         <div class="col-md-3">
             <div class="card bg-warning text-white">
-                <div class="card-body">
+        <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h4 class="mb-0">{{ $mahasiswas->where('foto', null)->count() }}</h4>
@@ -212,7 +212,7 @@
 
     <!-- Table View (Hidden by default) -->
     <div id="table-view" class="view-section" style="display: none;">
-        @if(count($mahasiswas) > 0)
+            @if(count($mahasiswas) > 0)
             <div class="card shadow-sm">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -221,29 +221,29 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Foto</th>
-                                    <th>NIM</th>
-                                    <th>Nama</th>
-                                    <th>Jurusan</th>
-                                    <th>Email</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($mahasiswas as $mahasiswa)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            @if($mahasiswa->foto)
-                                                <img src="{{ asset('storage/uploads/'.$mahasiswa->foto) }}" 
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Jurusan</th>
+                            <th>Email</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($mahasiswas as $mahasiswa)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                @if($mahasiswa->foto)
+                                    <img src="{{ asset('storage/uploads/'.$mahasiswa->foto) }}" 
                                                     alt="Foto {{ $mahasiswa->nama }}" 
                                                     class="rounded-circle" width="40" height="40" style="object-fit:cover;">
-                                            @else
+                                @else
                                                 <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center" 
                                                      width="40" height="40" style="width: 40px; height: 40px;">
                                                     <i class="fas fa-user text-muted"></i>
                                                 </div>
-                                            @endif
-                                        </td>
+                                @endif
+                                </td>
                                         <td><strong>{{ $mahasiswa->nim }}</strong></td>
                                         <td>{{ $mahasiswa->nama }}</td>
                                         <td>
@@ -263,11 +263,11 @@
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                     </div>
                 </div>
             </div>
@@ -307,7 +307,7 @@
                                             <i class="fas fa-chevron-right"></i>
                                         </a>
                                     </li>
-                                @else
+            @else
                                     <li class="page-item disabled">
                                         <span class="page-link">
                                             <i class="fas fa-chevron-right"></i>
@@ -321,7 +321,7 @@
             </div>
         </div>
     @endif
-</div>
+    </div>
 
 <style>
 .bg-gradient-primary {

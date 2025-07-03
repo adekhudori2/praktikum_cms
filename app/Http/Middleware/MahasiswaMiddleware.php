@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class MahasiswaMiddleware
 {
     public function handle($request, Closure $next)
-    {
+{
         // Cek apakah user sudah login di salah satu guard
         $user = null;
         $guard = null;
@@ -30,8 +30,8 @@ class MahasiswaMiddleware
         
         // Jika admin, izinkan semua akses
         if ($user->role === 'admin') {
-            return $next($request);
-        }
+        return $next($request);
+    }
         
         // Jika mahasiswa, batasi akses
         if ($user->role === 'mahasiswa') {
@@ -53,8 +53,8 @@ class MahasiswaMiddleware
             // Jika mahasiswa mencoba akses route admin, redirect ke dashboard mahasiswa
             if (in_array($routeName, ['mahasiswa.index', 'mahasiswa.create', 'mahasiswa.show', 'mahasiswa.edit', 'mahasiswa.update', 'mahasiswa.delete', 'mahasiswa.destroy'])) {
                 return redirect()->route('mahasiswa.dashboard')->with('error', 'Akses ditolak. Anda hanya bisa mengakses dashboard dan edit profil.');
-            }
-            
+}
+
             // Default: izinkan akses (untuk route yang tidak spesifik)
             return $next($request);
         }

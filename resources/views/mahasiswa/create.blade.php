@@ -13,7 +13,7 @@
             <h5 class="mb-0">Tambah Mahasiswa Baru</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('mahasiswa.store') }}" method="POST">
+            <form action="{{ route('mahasiswa.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 
                 <div class="mb-3">
@@ -25,7 +25,6 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" class="form-control" required minlength="6">
                 </div>
-
 
                 <div class="mb-3">
                     <label for="nim" class="form-label">NIM</label>
@@ -50,7 +49,7 @@
                         <option value="Teknik Informatika">Teknik Informatika</option>
                         <option value="Sistem Informasi">Sistem Informasi</option>
                         <option value="Teknik Komputer">Teknik Komputer</option>
-                        <option value="Manajemen Informatika">Manajemen Informatika</option>
+                        <option value="Manajemen Informatika">Psikologi</option>
                     </select>
                     @error('jurusan')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -72,27 +71,11 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('mahasiswa.store') }}" enctype="multipart/form-data">
-        @csrf
-        
-    
-        
-        <!-- Tambahkan field lainnya sesuai kebutuhan -->
         
         <div class="form-group mb-3">
             <label for="foto">Foto Profil</label>
             <input type="file" class="form-control @error('foto') is-invalid @enderror" 
-                   id="foto" name="foto">
+                        id="foto" name="foto" accept="image/*">
             @error('foto')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -104,5 +87,4 @@
             </form>
         </div>
     </div>
-    
 @endsection

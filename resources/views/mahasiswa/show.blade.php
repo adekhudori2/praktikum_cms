@@ -21,7 +21,7 @@
                     <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-1"></i>Kembali
                     </a>
-                </div>
+        </div>
             </div>
         </div>
     </div>
@@ -199,7 +199,7 @@
                             <i class="fas fa-arrow-left me-2"></i>Kembali ke Daftar
                         </a>
                     </div>
-                </div>
+            </div>
             </div>
         </div>
     </div>

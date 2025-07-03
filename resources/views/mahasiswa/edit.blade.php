@@ -3,6 +3,11 @@
 @section('title', 'Edit Mahasiswa')
 
 @section('content')
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Edit Data Mahasiswa</h5>
@@ -58,9 +63,6 @@
                     @enderror
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Batal</a>
-
                 <div class="mb-3">
                     <label for="foto">Foto Profil</label>
                     <input type="file" class="form-control @error('foto') is-invalid @enderror" 
@@ -83,6 +85,10 @@
                         </div>
                     @endif
                 </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ route('mahasiswa.index') }}" class="btn btn-secondary">Batal</a>
+
+                
             </form>
         </div>
     </div>

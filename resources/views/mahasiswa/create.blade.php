@@ -3,6 +3,11 @@
 @section('title', 'Tambah Mahasiswa')
 
 @section('content')
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <div class="card">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Tambah Mahasiswa Baru</h5>
@@ -11,6 +16,17 @@
             <form action="{{ route('mahasiswa.store') }}" method="POST">
                 @csrf
                 
+                <div class="mb-3">
+                <label>Username</label>
+                <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="password">Password</label>
+                <input type="password" name="password" class="form-control" required minlength="6">
+                </div>
+
+
                 <div class="mb-3">
                     <label for="nim" class="form-label">NIM</label>
                     <input type="text" class="form-control @error('nim') is-invalid @enderror" id="nim" name="nim" value="{{ old('nim') }}">

@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('jurusan');
             $table->string('email')->unique();
             $table->text('alamat');
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->string('role')->default('mahasiswa'); // admin / mahasiswa
             $table->timestamps();
         });
     }
